@@ -58,11 +58,11 @@ public class Person {
 		// Insert into TXT file
 		try {
 			FileWriter writer = new FileWriter(personID);
-			writer.write("Person ID: " + personID);
-			writer.write("First Name: " + firstName);
-			writer.write("Last Name: " + lastName);
-			writer.write("Address: " + address);
-			writer.write("Birth Date: " + birthDate);
+			writer.write(String.format("Person ID: %s\n", personID));
+			writer.write(String.format("First Name: %s\n", firstName));
+			writer.write(String.format("Last Name: %s\n", lastName));
+			writer.write(String.format("Address: %s\n", address));
+			writer.write(String.format("Birth Date: %s\n", birthDate));
 			writer.close();
 		} catch (IOException e) {
 			System.out.println("An error occurred: " + e);
