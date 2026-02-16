@@ -57,7 +57,7 @@ public class Person {
 
 		// Insert into TXT file
 		try {
-			FileWriter writer = new FileWriter(personID);
+			FileWriter writer = new FileWriter(String.format("%s.txt", personID));
 			writer.write(String.format("Person ID: %s\n", personID));
 			writer.write(String.format("First Name: %s\n", firstName));
 			writer.write(String.format("Last Name: %s\n", lastName));
