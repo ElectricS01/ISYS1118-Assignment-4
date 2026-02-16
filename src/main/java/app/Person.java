@@ -1,7 +1,11 @@
 package app;
 
+
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.Period;
+
 
 public class Person {
 	private String personID;
@@ -9,9 +13,18 @@ public class Person {
 	private String lastName;
 	private String address;
 	private String birthDate;
-	private int age;
 
-	public boolean addPerson(String personID, String firstName, String lastName, String address, String birthDate, int age) {
+	public Person() {
+	}
+
+	public Person(String personID, String firstName, String lastName, String address, String birthDate) {
+		boolean valid = addPerson(personID, firstName, lastName, address, birthDate);
+		if (!valid) {
+			throw new IllegalArgumentException("Invalid Person details");
+		}
+	}
+
+	public boolean addPerson(String personID, String firstName, String lastName, String address, String birthDate) {
 		// Check arguments meet conditions
 		boolean condition1 = checkAddPersonCondition1(personID);
 		boolean condition2 = checkAddPersonCondition2(address);
@@ -20,8 +33,15 @@ public class Person {
 			return false;
 		}
 
-		// Extra conditions
-		if (age < 0 || age > 200) {
+		// Extra Conditions
+		String[] splitBirthDate = birthDate.split("-");
+		int year = Integer.parseInt(splitBirthDate[2]);
+		int month = Integer.parseInt(splitBirthDate[1]);
+		int day = Integer.parseInt(splitBirthDate[0]);
+		LocalDate birthDateObj = LocalDate.of(year, month, day);
+
+		Period age = Period.between(birthDateObj, LocalDate.now());
+		if (age.getYears() < 0) {
 			return false;
 		}
 		if (firstName == null || lastName == null || firstName.isEmpty() || lastName.isEmpty()) {
@@ -34,7 +54,6 @@ public class Person {
 		this.personID = personID;
 		this.address = address;
 		this.birthDate = birthDate;
-		this.age = age;
 
 		// Insert into TXT file
 		try {
@@ -44,13 +63,20 @@ public class Person {
 			writer.write("Last Name: " + lastName);
 			writer.write("Address: " + address);
 			writer.write("Birth Date: " + birthDate);
-			writer.write("Age: " + age);
 			writer.close();
 		} catch (IOException e) {
 			System.out.println("An error occurred: " + e);
 		}
 
 		return true;
+	}
+
+	public static void updatePersonalDetails() {
+
+	}
+
+	public static void addID() {
+
 	}
 
 	// personID should be exactly 10 characters long
@@ -104,7 +130,7 @@ public class Person {
 		}
 
 		// Checks that address format is correct
-		String[] splitAddress = this.address.split("\\|");
+		String[] splitAddress = address.split("\\|");
 		if (splitAddress.length != 5) {
 			return false;
 		}
@@ -169,12 +195,5 @@ public class Person {
 		}
 
 		return true;
-	}
-
-	public static void updatePersonalDetails() {
-
-	}
-
-	public static void addID() {
 	}
 }
