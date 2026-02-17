@@ -13,6 +13,7 @@ public class PersonTest {
 	@Test
 	public void testAddPerson() {
 		// Test Valid Input and Writing to File
+		// Test normal inputs
 		File file = new File("people.csv");
 		long fileSize = file.length();
 		Person person = new Person();
@@ -26,6 +27,7 @@ public class PersonTest {
 		assertTrue(validPerson);
 		assertTrue(fileSize < file.length());
 
+		//Test leap year and 31 day months
 		fileSize = file.length();
 		person = new Person();
 		validPerson = person.addPerson("23##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "29-02-2000");
