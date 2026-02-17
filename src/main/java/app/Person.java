@@ -24,17 +24,7 @@ public class Person {
 			return false;
 		}
 
-		// Extra Conditions: age and name
-		String[] splitBirthDate = birthDate.split("-");
-		int year = Integer.parseInt(splitBirthDate[2]);
-		int month = Integer.parseInt(splitBirthDate[1]);
-		int day = Integer.parseInt(splitBirthDate[0]);
-		LocalDate birthDateObj = LocalDate.of(year, month, day);
-
-		Period age = Period.between(birthDateObj, LocalDate.now());
-		if (age.getYears() < 0) {
-			return false;
-		}
+		// Extra Condition: first and last name
 		if (firstName == null || lastName == null || firstName.isEmpty() || lastName.isEmpty()) {
 			return false;
 		}
@@ -46,7 +36,7 @@ public class Person {
 		this.address = address;
 		this.birthDate = birthDate;
 
-		// Insert into TXT file
+		// Insert into CSV file
 		boolean fileExists = Files.exists(Path.of("./people.csv"));
         try {
 			FileWriter writer = new FileWriter("./people.csv", true);
@@ -178,6 +168,13 @@ public class Person {
 				day > 31) {
 			return false;
 		} else if ((month == 4 || month == 6 || month == 9 || month == 11) && day > 30) {
+			return false;
+		}
+
+		// Check birthDate is not in the future
+		LocalDate birthDateObj = LocalDate.of(year, month, day);
+		Period age = Period.between(birthDateObj, LocalDate.now());
+		if (age.getDays() < 0) {
 			return false;
 		}
 
