@@ -9,19 +9,32 @@ import java.nio.file.Path;
 public class PersonTest {
 	@Test
 	public void testAddPerson() {
+		Person person = null;
+		boolean validPerson;
+
 		// Test Valid Input
 		// Valid Person details
-		Person person = new Person();
-		boolean validPerson = person.addPerson("56s_d%&fAB", "Ronald", "Foong", "32|Elizabeth Street|Melbourne|Victoria|Australia", "15-11-2006");
+		person = new Person();
+		validPerson = person.addPerson("56s_d%&fAB", "Ronald", "Foong", "32|Elizabeth Street|Melbourne|Victoria|Australia", "15-11-2006");
 		assertTrue(validPerson);
 
 		person = new Person();
 		validPerson = person.addPerson("22##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
 		assertTrue(validPerson);
 
+		person = new Person();
+		validPerson = person.addPerson("23##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "29-02-2000");
+		assertTrue(validPerson);
+
+		person = new Person();
+		validPerson = person.addPerson("24##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "31-01-1990");
+		assertTrue(validPerson);
+
 		// TXT file has been created
 		assertTrue(Files.exists(Path.of("./people/56s_d%&fAB.txt")));
 		assertTrue(Files.exists(Path.of("./people/22##abcdEF.txt")));
+		assertTrue(Files.exists(Path.of("./people/23##abcdEF.txt")));
+		assertTrue(Files.exists(Path.of("./people/24##abcdEF.txt")));
 
 		// Test Condition 1
 		// Null personID
@@ -100,7 +113,40 @@ public class PersonTest {
 		assertFalse(validPerson);
 
 		person = new Person();
+		validPerson = person.addPerson("22##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "5-2-24");
+		assertFalse(validPerson);
+
+		person = new Person();
 		validPerson = person.addPerson("22##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "This-is-Test");
+		assertFalse(validPerson);
+
+		//  Invalid dates
+		person = new Person();
+		validPerson = person.addPerson("22##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "00-11-1990");
+		assertFalse(validPerson);
+
+		person = new Person();
+		validPerson = person.addPerson("22##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-00-1990");
+		assertFalse(validPerson);
+
+		person = new Person();
+		validPerson = person.addPerson("22##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "29-02-1990");
+		assertFalse(validPerson);
+
+		person = new Person();
+		validPerson = person.addPerson("22##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "30-02-2000");
+		assertFalse(validPerson);
+
+		person = new Person();
+		validPerson = person.addPerson("22##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "29-02-1700");
+		assertFalse(validPerson);
+
+		person = new Person();
+		validPerson = person.addPerson("22##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "31-04-1990");
+		assertFalse(validPerson);
+
+		person = new Person();
+		validPerson = person.addPerson("22##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "32-05-1990");
 		assertFalse(validPerson);
 
 		// Extra Conditions
