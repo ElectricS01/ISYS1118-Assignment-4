@@ -35,7 +35,7 @@ public class Person {
 			return false;
 		}
 
-		// Extra Conditions
+		// Extra Conditions: age and name
 		String[] splitBirthDate = birthDate.split("-");
 		int year = Integer.parseInt(splitBirthDate[2]);
 		int month = Integer.parseInt(splitBirthDate[1]);
@@ -67,7 +67,7 @@ public class Person {
 			writer.write(String.format("First Name: %s\n", firstName));
 			writer.write(String.format("Last Name: %s\n", lastName));
 			writer.write(String.format("Address: %s\n", address));
-			writer.write(String.format("Birth Date: %s\n", birthDate));
+			writer.write(String.format("Birth Date: %s", birthDate));
 			writer.close();
 		} catch (IOException e) {
 			System.out.println("An error occurred: " + e);
@@ -84,10 +84,7 @@ public class Person {
 
 	}
 
-	// personID should be exactly 10 characters long
-	// The first two characters should be numbers between 2 and 9
-	// There should be at least two special characters between characters 3 and 8
-	// The last two characters should be uppercase letters (A-Z)
+	// Checks for valid personID
 	private boolean checkAddPersonCondition1(String personID) {
 		// Ensures personID is not null
 		if (personID == null) {
@@ -126,8 +123,7 @@ public class Person {
 		return true;
 	}
 
-	// The address of the Person should follow the following format: Street Number|Street|City|State|Country
-	// The State should be only Victoria
+	// Checks for valid address
 	private boolean checkAddPersonCondition2(String address) {
 		// Ensures address is not null
 		if (address == null) {
@@ -148,7 +144,7 @@ public class Person {
 		return true;
 	}
 
-	// The format of the birthdate of the person should follow the following format: DD-MM-YYYY
+	// Checks for valid birthDate
 	private boolean checkAddPersonCondition3(String birthDate) {
 		// Ensures birthDate is not null
 		if (birthDate == null) {
