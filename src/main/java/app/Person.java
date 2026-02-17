@@ -15,16 +15,6 @@ public class Person {
 	private String address;
 	private String birthDate;
 
-	public Person() {
-	}
-
-	public Person(String personID, String firstName, String lastName, String address, String birthDate) {
-		boolean valid = addPerson(personID, firstName, lastName, address, birthDate);
-		if (!valid) {
-			throw new IllegalArgumentException("Invalid Person details");
-		}
-	}
-
 	public boolean addPerson(String personID, String firstName, String lastName, String address, String birthDate) {
 		// Check arguments meet conditions
 		boolean condition1 = checkAddPersonCondition1(personID);
