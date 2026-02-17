@@ -2,6 +2,9 @@ package app;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -9,32 +12,31 @@ import java.nio.file.Path;
 public class PersonTest {
 	@Test
 	public void testAddPerson() {
-		Person person = null;
-		boolean validPerson;
-
-		// Test Valid Input
-		// Valid Person details
-		person = new Person();
-		validPerson = person.addPerson("56s_d%&fAB", "Ronald", "Foong", "32|Elizabeth Street|Melbourne|Victoria|Australia", "15-11-2006");
+		// Test Valid Input and Writing to File
+		File file = new File("people.csv");
+		long fileSize = file.length();
+		Person person = new Person();
+		boolean validPerson = person.addPerson("56s_d%&fAB", "Ronald", "Foong", "32|Elizabeth Street|Melbourne|Victoria|Australia", "15-11-2006");
 		assertTrue(validPerson);
+		assertTrue(fileSize < file.length());
 
+		fileSize = file.length();
 		person = new Person();
 		validPerson = person.addPerson("22##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
 		assertTrue(validPerson);
+		assertTrue(fileSize < file.length());
 
+		fileSize = file.length();
 		person = new Person();
 		validPerson = person.addPerson("23##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "29-02-2000");
 		assertTrue(validPerson);
+		assertTrue(fileSize < file.length());
 
+		fileSize = file.length();
 		person = new Person();
 		validPerson = person.addPerson("24##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "31-01-1990");
 		assertTrue(validPerson);
-
-		// TXT file has been created
-		assertTrue(Files.exists(Path.of("./people/56s_d%&fAB.txt")));
-		assertTrue(Files.exists(Path.of("./people/22##abcdEF.txt")));
-		assertTrue(Files.exists(Path.of("./people/23##abcdEF.txt")));
-		assertTrue(Files.exists(Path.of("./people/24##abcdEF.txt")));
+		assertTrue(fileSize < file.length());
 
 		// Test Condition 1
 		// Null personID

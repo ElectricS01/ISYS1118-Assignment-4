@@ -1,6 +1,7 @@
 package app;
 
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -58,16 +59,13 @@ public class Person {
 		this.birthDate = birthDate;
 
 		// Insert into TXT file
-		try {
-			Path directory = Path.of("./people");
-			Files.createDirectories(directory);
-
-			FileWriter writer = new FileWriter(String.format("./people/%s.txt", personID));
-			writer.write(String.format("Person ID: %s\n", personID));
-			writer.write(String.format("First Name: %s\n", firstName));
-			writer.write(String.format("Last Name: %s\n", lastName));
-			writer.write(String.format("Address: %s\n", address));
-			writer.write(String.format("Birth Date: %s", birthDate));
+		boolean fileExists = Files.exists(Path.of("./people.csv"));
+        try {
+			FileWriter writer = new FileWriter("./people.csv", true);
+			if (!fileExists) {
+				writer.write("personID,firstName,lastName,address,birthDate,passport,driversLicense,medicareCard,studentCard");
+			}
+			writer.append(String.format("\n%s,%s,%s,%s,%s,NULL,NULL,NULL,NULL", personID, firstName, lastName, address, birthDate));
 			writer.close();
 		} catch (IOException e) {
 			System.out.println("An error occurred: " + e);
