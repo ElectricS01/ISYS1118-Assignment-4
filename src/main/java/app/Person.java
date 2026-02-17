@@ -3,6 +3,8 @@ package app;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -57,7 +59,10 @@ public class Person {
 
 		// Insert into TXT file
 		try {
-			FileWriter writer = new FileWriter(String.format("%s.txt", personID));
+			Path directory = Path.of("./people");
+			Files.createDirectories(directory);
+
+			FileWriter writer = new FileWriter(String.format("./people/%s.txt", personID));
 			writer.write(String.format("Person ID: %s\n", personID));
 			writer.write(String.format("First Name: %s\n", firstName));
 			writer.write(String.format("Last Name: %s\n", lastName));
