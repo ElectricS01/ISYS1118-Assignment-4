@@ -8,6 +8,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 
 
 public class Person {
@@ -129,54 +132,20 @@ public class Person {
 			return false;
 		}
 
-		// Checks birthDate is in DD-MM-YYY format
-		String[] splitBirthDate = birthDate.split("-");
-		if (splitBirthDate.length != 3) {
-			return false;
-		}
-		if (splitBirthDate[0].length() != 2 || splitBirthDate[1].length() != 2 || splitBirthDate[2].length() != 4) {
-			return false;
-		}
-		// Checks birthDate uses digits
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < splitBirthDate[i].length(); j++) {
-				if (!Character.isDigit(splitBirthDate[i].charAt(j))) {
-					return false;
-				}
-			}
-		}
 
-		// Checks valid date
-		int day = Integer.parseInt(splitBirthDate[0]);
-		int month = Integer.parseInt(splitBirthDate[1]);
-		int year = Integer.parseInt(splitBirthDate[2]);
-		if (month < 1 || month > 12) {
-			return false;
-		}
-		if (day < 1) {
-			return false;
-		}
-		if (month == 2) {
-			if (year % 400 == 0 || (year % 100 != 0 && year % 4 == 0)) {
-				if (day > 29) {
-					return false;
-				}
-			} else {
-				if (day > 28) {
-					return false;
-				}
-			}
-		} else if ((month == 1 || month == 3 || month == 5 || month == 7 | month == 8 || month == 10 || month == 12) &&
-				day > 31) {
-			return false;
-		} else if ((month == 4 || month == 6 || month == 9 || month == 11) && day > 30) {
-			return false;
-		}
+		try {
+			// Checks birthDate is in DD-MM-YYY format
+			LocalDate birthDateObj = LocalDate.parse(birthDate, DateTimeFormatter
+					.ofPattern("dd-MM-uuuu")
+					.withResolverStyle(ResolverStyle.STRICT)
+			);
 
-		// Check birthDate is not in the future
-		LocalDate birthDateObj = LocalDate.of(year, month, day);
-		Period age = Period.between(birthDateObj, LocalDate.now());
-		if (age.getDays() < 0) {
+			// Check birthDate is not in the future
+			Period age = Period.between(birthDateObj, LocalDate.now());
+			if (age.getDays() < 0) {
+				return false;
+			}
+		} catch (DateTimeParseException e) {
 			return false;
 		}
 
