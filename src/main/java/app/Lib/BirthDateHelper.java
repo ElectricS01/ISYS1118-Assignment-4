@@ -6,6 +6,16 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 public class BirthDateHelper {
+	public static boolean isDateValid(String birthDate) {
+		try {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+			LocalDate.parse(birthDate, formatter);
+			return true;
+		} catch (DateTimeParseException e) {
+			return false;
+		}
+	}
+
 	public static boolean isOver18(String birthDate) {
 		try {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
