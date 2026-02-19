@@ -197,8 +197,16 @@ public class PersonTest {
         assertFalse(validPerson);
     }
 
+    //updatePersonalDetails() tests
     @Test
-    public void testAddID() {
+    public void testUpdatePersonalDetails_InvalidUpdateAddressMinor() {
+        // A person under 18 should NOT be able to update their address (Condition 1)
+        Person person = new Person();
+        person.addPerson("23##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-2010");
+        boolean result = person.updatePersonalDetails("23##abcdEF", "23##abcdEF", "First Name", "Last Name", "99|New Street|Melbourne|Victoria|Australia", "15-11-2010");
+        assertFalse(result);
     }
+
+
 }
 
