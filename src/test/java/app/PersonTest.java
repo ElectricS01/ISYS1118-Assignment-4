@@ -207,6 +207,15 @@ public class PersonTest {
         assertFalse(result);
     }
 
+    //addID() tests
+    @Test
+    public void testAddID_ValidPassport() {
+    // Valid passport: exactly 8 chars, first two uppercase letters, rest digits
+    Person person = new Person();
+    person.addPerson("22##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
+    boolean result = person.addID("22##abcdEF", "AB123456", null, null, null);
+    assertTrue(result);
+    }
 
 }
 
