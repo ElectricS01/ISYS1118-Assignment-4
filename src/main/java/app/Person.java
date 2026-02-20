@@ -43,9 +43,9 @@ public class Person {
         try {
 			FileWriter writer = new FileWriter("./people.csv", true);
 			if (!fileExists) {
-				writer.write("personID,firstName,lastName,address,birthDate,passport,driversLicense,medicareCard,studentCard");
+				writer.write("personID,firstName,lastName,address,birthDate,passport,driversLicense,medicareCard,studentCard\n");
 			}
-			writer.append(String.format("\n%s,%s,%s,%s,%s,NULL,NULL,NULL,NULL", personID, firstName, lastName, address, birthDate));
+			writer.write(String.format("%s,%s,%s,%s,%s,NULL,NULL,NULL,NULL\n", personID, firstName, lastName, address, birthDate));
 			writer.close();
 		} catch (IOException e) {
 			System.out.println("An error occurred: " + e);
@@ -107,7 +107,7 @@ public class Person {
 				if(cols.length < 9) continue;
 
 				if (cols[0].equals(personID)) {
-					targetIndex = 1;
+					targetIndex = i;
 					break;
 				}
 			}

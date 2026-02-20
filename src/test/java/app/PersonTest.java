@@ -212,7 +212,7 @@ public class PersonTest {
         assertFalse(validPerson);
     }
 
-    //updatePersonalDetails() tests
+    //updatePersonDetails() tests
     @Test
     public void testUpdatePersonDetails_ValidUpdateAddressMinor() {
         Person person = new Person();
