@@ -2,6 +2,8 @@ package app;
 
 import app.Lib.BirthDateHelper;
 import app.Lib.AddPersonHelper;
+import app.Lib.Documents.IdDocument;
+import app.Lib.Documents.StudentCard;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -153,7 +155,11 @@ public class Person {
 		}
 	}
 
-	public static void addID() {
+	public boolean addID(IdDocument idDocument) {
+		if (BirthDateHelper.isOver18(birthDate) && idDocument.getClass() == StudentCard.class) {
+			return false;
+		}
 
+		return !idDocument.isValid() || idDocument.save();
 	}
 }
