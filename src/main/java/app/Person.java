@@ -1,9 +1,8 @@
 package app;
 
-import app.Lib.BirthDateHelper;
+import app.Lib.DateHelper;
 import app.Lib.AddPersonHelper;
 import app.Lib.Documents.IdDocument;
-import app.Lib.Documents.StudentCard;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -156,7 +155,7 @@ public class Person {
 	}
 
 	public boolean addID(IdDocument idDocument) {
-		if (idDocument.childrenOnly() && BirthDateHelper.isOver18(birthDate)) {
+		if (idDocument.childrenOnly() && DateHelper.isOver18(birthDate)) {
 			return false;
 		}
 
