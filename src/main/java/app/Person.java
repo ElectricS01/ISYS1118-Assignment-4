@@ -53,8 +53,104 @@ public class Person {
 		return true;
 	}
 
-	public static void updatePersonalDetails() {
+	public boolean updatePersonDetails(String existingPersonID, String newPersonID, String newFirstName, String newLastName, String newAddress, String newBirthDate) {
+		 //Check if the conditions from addPerson are met
+		boolean condition1 = AddPersonHelper.checkAddPersonCondition1(newPersonID);
+		boolean condition2 = AddPersonHelper.checkAddPersonCondition2(newAddress);
+		boolean condition3 = AddPersonHelper.checkAddPersonCondition3(newBirthDate);
 
+		if (!condition1 || !condition2 || !condition3) {
+			return false;
+		}
+
+		// Extra Condition: first and last name
+		if (firstName == null || lastName == null || firstName.isEmpty() || lastName.isEmpty()) {
+			return false;
+		}
+
+		//The file must exist to update
+		Path path = Path.of("./people.csv");
+		if (!Files.exists(path)) {
+			return false;
+		}
+
+		try {
+			java.util.List<String> lines = Files.readAllLines(path);
+			if (lines.isEmpty()) return false;
+
+			int targetIndex = -1;
+			for (int i = 1; i < lines.size(); i++) {
+				String line = lines.get(i);
+				if (line == null || line.trim().isEmpty()) continue;
+
+				String[] cols = line.split(",", -1);
+				if(cols.length < 9) continue;
+
+				if (cols[0].equals(existingPersonID)) {
+					targetIndex = 1;
+					break;
+				}
+			}
+
+			if (targetIndex == -1) {
+				return false;
+			}
+
+			// If changing ID, this method ensure new ID is not already used by another row
+			if (!existingPersonID.equals(newPersonID)) {
+				for (int i = 1; i < lines.size(); i++) {
+					if (i == targetIndex) continue;
+					String line = lines.get(i);
+					if (line == null || line.trim().isEmpty()) continue;
+
+					String[] cols = line.split(",", -1);
+					if (cols.length < 1) continue;
+
+					if (cols[0].equals(newPersonID)) {
+						return false; // duplicate ID
+					}
+				}
+			}
+
+			// Preserve existing ID docs columns (passport, driversLicense, medicareCard, studentCard)
+			String[] oldCols = lines.get(targetIndex).split(",", -1);
+			if (oldCols.length < 9) return false;
+
+			String passport = oldCols[5];
+			String driversLicense = oldCols[6];
+			String medicareCard = oldCols[7];
+			String studentCard = oldCols[8];
+
+			// Update the row
+			String updatedLine = String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s",
+					newPersonID,
+					newFirstName,
+					newLastName,
+					newAddress,
+					newBirthDate,
+					passport,
+					driversLicense,
+					medicareCard,
+					studentCard
+			);
+
+			lines.set(targetIndex, updatedLine);
+
+			// overwrite existing details
+			Files.write(path, lines);
+
+			// Update person details
+			this.personID = newPersonID;
+			this.firstName = newFirstName;
+			this.lastName = newLastName;
+			this.address = newAddress;
+			this.birthDate = newBirthDate;
+
+			return true;
+		} catch (IOException e) {
+			System.out.println("An error occurred: " + e);
+			return false;
+		}
 	}
 
 	public static void addID() {
