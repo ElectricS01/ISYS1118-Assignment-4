@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import app.Lib.Documents.IdDocument;
+import app.Lib.Documents.Passport;
 
 public class PersonTest {
 
@@ -304,15 +306,54 @@ public class PersonTest {
         assertFalse(result);
     }
 
+    @Test
+    public void testUpdatePersonDetails_PersonDoesNotExist() {
+    Person person = new Person();
+    boolean result = person.updatePersonDetails("99##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
+    assertFalse(result);
+    }
+
+   @Test
+    public void testUpdatePersonDetails_InvalidUpdateIDEvenFirstDigit() {
+        Person person = new Person();
+        person.addPerson("22##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
+        boolean result = person.updatePersonDetails("32##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
+        assertFalse(result);
+    }
+
     //addID() tests
-    /*@Test
+    @Test
     public void testAddID_ValidPassport() {
-    // Valid passport: exactly 8 chars, first two uppercase letters, rest digits
     Person person = new Person();
     person.addPerson("22##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
-    boolean result = person.addID("22##abcdEF", "AB123456", null, null, null);
+    IdDocument passport = new Passport(
+                "AB123456",
+                "First Name Last Name",
+                "15-11-1990",
+                "Australia",
+                "01-01-1990",
+                "15-11-1990",
+                "AU-GOV"
+        );
+    boolean result = person.addID(passport);
     assertTrue(result);
-    }*/
+    }
+    @Test
+    public void testAddID_InValidPassport() {
+    Person person = new Person();
+    person.addPerson("22##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
+    IdDocument passport = new Passport(
+                "23123456",
+                "First Name Last Name",
+                "15-11-1990",
+                "Australia",
+                "01-01-1990",
+                "15-11-1990",
+                "AU-GOV"
+        );
+    boolean result = person.addID(passport);
+    assertFalse(result);
+    }
 
 }
 
