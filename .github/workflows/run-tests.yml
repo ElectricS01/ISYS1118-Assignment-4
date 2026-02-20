@@ -16,9 +16,3 @@ jobs:
 
       - name: Run tests
         run: mvn test
-
-  another-job:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository code
-        run: ls -la
