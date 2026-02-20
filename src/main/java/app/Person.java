@@ -156,10 +156,10 @@ public class Person {
 	}
 
 	public boolean addID(IdDocument idDocument) {
-		if (BirthDateHelper.isOver18(birthDate) && idDocument.getClass() == StudentCard.class) {
+		if (idDocument.childrenOnly() && BirthDateHelper.isOver18(birthDate)) {
 			return false;
 		}
 
-		return !idDocument.isValid() || idDocument.save();
+		return idDocument.isValid() && idDocument.save();
 	}
 }
