@@ -4,25 +4,33 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.LocalDate;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DateHelperTest {
 
-	static Stream<org.junit.jupiter.params.provider.Arguments> validDateProvider() {
+	static Stream<Arguments> validDateProvider() {
 		return Stream.of(
-				Arguments.of("01-01-2000", "Standard date passes"),
-				Arguments.of("31-12-1999", "End of year passes"),
-				Arguments.of("29-02-2024", "Leap day passes"),
-				Arguments.of("29-02-2000", "Century leap day passes")
+				Arguments.of("01-01-2000", LocalDate.of(2000, 1, 1), "Standard date passes"),
+				Arguments.of("31-12-1999", LocalDate.of(1999, 12, 31), "End of year passes"),
+				Arguments.of("29-02-2024", LocalDate.of(2024, 2, 29), "Leap day passes"),
+				Arguments.of("29-02-2000", LocalDate.of(2000, 2, 29), "Century leap day passes")
 		);
 	}
 
-	@ParameterizedTest(name = "{1}")
+	@ParameterizedTest(name = "{2}")
 	@MethodSource("validDateProvider")
-	void testIsValidDate_Valid(String input, String label) {
+	void testParseDate_Valid(String input, LocalDate expected, String label) {
+		LocalDate parsed = DateHelper.parseDate(input);
+		assertNotNull(parsed, "Date should parse: " + input);
+		assertEquals(expected, parsed, "Parsed date does not match expected: " + input);
+	}
+
+	@ParameterizedTest(name = "{2}")
+	@MethodSource("validDateProvider")
+	void testIsValidDate_Valid(String input, LocalDate expected, String label) {
 		assertTrue(DateHelper.isValidDate(input), "Date should be valid: " + input);
 	}
 
@@ -52,5 +60,30 @@ public class DateHelperTest {
 	@MethodSource("invalidDateProvider")
 	void testIsValidDate_Invalid(String input, String label) {
 		assertFalse(DateHelper.isValidDate(input), "Date should be invalid: " + input);
+	}
+
+	@ParameterizedTest(name = "{1}")
+	@MethodSource("invalidDateProvider")
+	void testParseDate_Invalid(String input, String label) {
+		assertNull(DateHelper.parseDate(input), "Date should fail to parse: " + input);
+	}
+
+	static Stream<Arguments> under18Provider() {
+		return Stream.of(
+				Arguments.of("22-02-2008", LocalDate.of(2026, 2, 21), true, "Under 18"),
+				Arguments.of("21-02-2008", LocalDate.of(2026, 2, 21), false, "Exactly 18"),
+				Arguments.of("20-02-2008", LocalDate.of(2026, 2, 21), false, "Just over 18"),
+				Arguments.of("30-02-2008", LocalDate.of(2026,2,21), false, "Invalid date"),
+				Arguments.of("22/02/2008", LocalDate.of(2026,2,21), false, "Invalid date format"),
+				Arguments.of(null, LocalDate.of(2026,2,21), false, "Null input"),
+				Arguments.of("29-02-2004", LocalDate.of(2022, 2, 28), true, "Leap day not yet 18"),
+				Arguments.of("29-02-2004", LocalDate.of(2022, 3, 1), false, "Leap day just turned 18")
+		);
+	}
+
+	@ParameterizedTest(name = "{3}")
+	@MethodSource("under18Provider")
+	void testIsOver18(String birthDate, LocalDate today, boolean expected, String label) {
+		assertEquals(expected, DateHelper.isUnder18(birthDate, today));
 	}
 }

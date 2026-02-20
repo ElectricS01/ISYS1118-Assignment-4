@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
 
 
 public class Person {
@@ -76,12 +77,12 @@ public class Person {
 		}
 
 		// Check conditions 1, 2, and 3
-		boolean isOver18 = DateHelper.isOver18(newBirthDate);
+		boolean isUnder18 = DateHelper.isUnder18(newBirthDate, LocalDate.now());
 		boolean changeBirthDay = !birthDate.equals(newBirthDate);
 		boolean canChangeID = (Character.getNumericValue(personID.charAt(0)) % 2 != 0);
 
 		// Condition 1
-		if (!isOver18 && !address.equals(newAddress)) {
+		if (isUnder18 && !address.equals(newAddress)) {
 			return false;
 		}
 		// Condition 2
@@ -155,7 +156,7 @@ public class Person {
 	}
 
 	public boolean addID(IdDocument idDocument) {
-		if (idDocument.childrenOnly() && DateHelper.isOver18(birthDate)) {
+		if (idDocument.childrenOnly() && !DateHelper.isUnder18(birthDate, LocalDate.now())) {
 			return false;
 		}
 

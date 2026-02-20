@@ -11,6 +11,10 @@ public class DateHelper {
       DateTimeFormatter.ofPattern("dd-MM-uuuu").withResolverStyle(ResolverStyle.STRICT);
 
   public static LocalDate parseDate(String birthDate) {
+    if (birthDate == null) {
+      return null;
+    }
+
     try {
       return LocalDate.parse(birthDate, formatter);
     } catch (DateTimeParseException e) {
@@ -31,13 +35,15 @@ public class DateHelper {
     }
   }
 
-  public static boolean isOver18(String birthDate) {
+  public static boolean isUnder18(String birthDate, LocalDate today) {
     try {
-      LocalDate dob = LocalDate.parse(birthDate, formatter);
-      LocalDate today = LocalDate.now();
+      LocalDate dob = parseDate(birthDate);
+      if (dob == null) {
+        return false;
+      }
 
       int age = Period.between(dob, today).getYears();
-      return age > 18;
+      return age < 18;
     } catch (DateTimeParseException e) {
       return false;
     }
