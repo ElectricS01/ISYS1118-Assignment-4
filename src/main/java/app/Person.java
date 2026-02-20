@@ -78,7 +78,7 @@ public class Person {
 		// Check conditions 1, 2, and 3
 		boolean isOver18 = DateHelper.isOver18(newBirthDate);
 		boolean changeBirthDay = !birthDate.equals(newBirthDate);
-		boolean canChangeID = !((personID.charAt(0) - '0') % 2 == 0);
+		boolean canChangeID = (Character.getNumericValue(personID.charAt(0)) % 2 != 0);
 
 		// Condition 1
 		if (!isOver18 && !address.equals(newAddress)) {
@@ -94,6 +94,7 @@ public class Person {
 		}
 
 		try {
+			// Find entry to update
 			java.util.List<String> lines = Files.readAllLines(path);
 			if (lines.isEmpty()) return false;
 
@@ -113,47 +114,8 @@ public class Person {
 
 			if (targetIndex == -1) return false;
 
-			String[] oldCols = lines.get(targetIndex).split(",", -1);
-
-			String oldPersonID = oldCols[0];
-			String oldFirstName = oldCols[1];
-			String oldLastName = oldCols[2];
-			String oldAddress = oldCols[3];
-			String oldBirthDate = oldCols[4];
-
-			// If first digit of existing ID is even, ID cannot change
-			char firstChar = oldPersonID.charAt(0);
-			if (Character.isDigit(firstChar)) {
-				int digit = Character.getNumericValue(firstChar);
-				if (digit % 2 == 0 && !oldPersonID.equals(newPersonID)) {
-					return false;
-				}
-			}
-
-			// If birthday changes, nothing else can change
-			if (!oldBirthDate.equals(newBirthDate)) {
-				if (!oldPersonID.equals(newPersonID) ||
-						!oldFirstName.equals(newFirstName) ||
-						!oldLastName.equals(newLastName) ||
-						!oldAddress.equals(newAddress)) {
-					return false;
-				}
-			}
-
-			// If under 18, address cannot change
-			java.time.LocalDate birth =
-					java.time.LocalDate.parse(oldBirthDate,
-							java.time.format.DateTimeFormatter.ofPattern("dd-MM-uuuu"));
-
-			int age = java.time.Period.between(birth,
-					java.time.LocalDate.now()).getYears();
-
-			if (age < 18 && !oldAddress.equals(newAddress)) {
-				return false;
-			}
-
-
 			// Preserve existing ID docs columns (passport, driversLicense, medicareCard, studentCard)
+			String[] oldCols = lines.get(targetIndex).split(",", -1);
 
 			String passport = oldCols[5];
 			String driversLicense = oldCols[6];
