@@ -328,11 +328,12 @@ public class PersonTest {
     person.addPerson("22##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
     IdDocument passport = new Passport(
                 "AB123456",
+                "22##abcdEF",
                 "First Name Last Name",
                 "15-11-1990",
                 "Australia",
-                "01-01-1990",
-                "15-11-1990",
+                "01-01-2020",
+                "01-01-2030",
                 "AU-GOV"
         );
     boolean result = person.addID(passport);
@@ -344,11 +345,12 @@ public class PersonTest {
     person.addPerson("22##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
     IdDocument passport = new Passport(
                 "23123456",
+                "22##abcdEF",
                 "First Name Last Name",
                 "15-11-1990",
                 "Australia",
-                "01-01-1990",
-                "15-11-1990",
+                "01-01-2020",
+                "01-01-2030",
                 "AU-GOV"
         );
     boolean result = person.addID(passport);

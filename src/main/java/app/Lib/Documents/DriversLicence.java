@@ -7,6 +7,7 @@ public class DriversLicence extends IdDocument {
 
   public DriversLicence(
       String id,
+      String personId,
       String name,
       String dateOfBirth,
       String country,
@@ -14,16 +15,21 @@ public class DriversLicence extends IdDocument {
       String dateOfExpiry,
       String version,
       String vehicleType) {
-    super(id, name, dateOfBirth, country, dateOfIssue, dateOfExpiry);
+    super(id, personId, name, dateOfBirth, country, dateOfIssue, dateOfExpiry);
     this.version = version;
     this.vehicleType = vehicleType;
   }
 
   @Override
   public boolean isValid() {
-    if (!areDatesValid()) return false;
+    if (areDatesInvalid()) return false;
 
     return id.matches("^[A-Za-z]{2}\\d{8}$");
+  }
+
+  @Override
+  protected String getFileName() {
+    return "drivers_licences.txt";
   }
 
   @Override

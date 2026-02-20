@@ -6,21 +6,27 @@ public class Passport extends IdDocument {
 
   public Passport(
       String id,
+      String personId,
       String name,
       String dateOfBirth,
       String country,
       String dateOfIssue,
       String dateOfExpiry,
       String authority) {
-    super(id, name, dateOfBirth, country, dateOfIssue, dateOfExpiry);
+    super(id, personId, name, dateOfBirth, country, dateOfIssue, dateOfExpiry);
     this.authority = authority;
   }
 
   @Override
   public boolean isValid() {
-    if (!areDatesValid()) return false;
+    if (areDatesInvalid()) return false;
 
     return id.matches("^[A-Za-z]{2}\\d{6}$");
+  }
+
+  @Override
+  protected String getFileName() {
+    return "passports.txt";
   }
 
   @Override
