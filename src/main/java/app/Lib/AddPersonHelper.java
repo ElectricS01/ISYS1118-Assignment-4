@@ -59,8 +59,15 @@ public class AddPersonHelper {
             return false;
         }
 
+        // Checks that Street Number is made of digits
+        for (int i = 0; i < splitAddress[0].length(); i++) {
+            if (!Character.isDigit(splitAddress[0].charAt(i))) {
+                return false;
+            }
+        }
+
         // Checks that State is Victoria
-        if (!splitAddress[3].equals("Victoria")) {
+        if (!splitAddress[3].equals("Victoria") || !splitAddress[4].equals("Australia")) {
             return false;
         }
 
