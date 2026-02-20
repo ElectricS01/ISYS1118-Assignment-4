@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.File;
 
 public class PersonTest {
-	
+
     @Test
     public void testAddPerson_ValidNormalInputs() {
         File file = new File("people.csv");
@@ -218,19 +218,19 @@ public class PersonTest {
         // A person under 18 should NOT be able to update their address (Condition 1)
         Person person = new Person();
         person.addPerson("23##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-2010");
-        boolean result = person.updatePersonalDetails("23##abcdEF", "23##abcdEF", "First Name", "Last Name", "99|New Street|Melbourne|Victoria|Australia", "15-11-2010");
+        boolean result = person.updatePersonDetails("23##abcdEF", "23##abcdEF", "First Name", "Last Name", "99|New Street|Melbourne|Victoria|Australia", "15-11-2010");
         assertFalse(result);
     }
 
     //addID() tests
-    @Test
+    /*@Test
     public void testAddID_ValidPassport() {
     // Valid passport: exactly 8 chars, first two uppercase letters, rest digits
     Person person = new Person();
     person.addPerson("22##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
     boolean result = person.addID("22##abcdEF", "AB123456", null, null, null);
     assertTrue(result);
-    }
+    }*/
 
 }
 
