@@ -3,6 +3,9 @@ package app;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class PersonTest {
 
@@ -219,6 +222,19 @@ public class PersonTest {
         person.addPerson("23##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
         boolean result = person.updatePersonDetails("23##abcdEF", "First Name", "Last Name", "99|New Street|Melbourne|Victoria|Australia", "15-11-1990");
         assertTrue(result);
+
+        try {
+            result = false;
+            java.util.List<String> lines = Files.readAllLines(Path.of("people.csv"));
+            for (String line : lines) {
+                if (line.matches("23##abcdEF,First Name,Last Name,99\\|New Street\\|Melbourne\\|Victoria\\|Australia,15-11-1990.*")) {
+                    result = true;
+                }
+            }
+            assertTrue(result);
+        } catch (IOException e) {
+            System.out.println("An error occurred: " + e);
+        }
     }
 
     @Test
@@ -236,6 +252,19 @@ public class PersonTest {
         person.addPerson("23##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
         boolean result = person.updatePersonDetails("23##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-2010");
         assertTrue(result);
+
+        try {
+            result = false;
+            java.util.List<String> lines = Files.readAllLines(Path.of("people.csv"));
+            for (String line : lines) {
+                if (line.matches("23##abcdEF,First Name,Last Name,32\\|Highland Street\\|Melbourne\\|Victoria\\|Australia,15-11-2010.*")) {
+                    result = true;
+                }
+            }
+            assertTrue(result);
+        } catch (IOException e) {
+            System.out.println("An error occurred: " + e);
+        }
     }
 
     @Test
@@ -250,8 +279,21 @@ public class PersonTest {
     public void testUpdatePersonDetails_ValidUpdatePersonID() {
         Person person = new Person();
         person.addPerson("33##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
-        boolean result = person.updatePersonDetails("23##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
+        boolean result = person.updatePersonDetails("43##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
         assertTrue(result);
+
+        try {
+            result = false;
+            java.util.List<String> lines = Files.readAllLines(Path.of("people.csv"));
+            for (String line : lines) {
+                if (line.matches("43##abcdEF,First Name,Last Name,32\\|Highland Street\\|Melbourne\\|Victoria\\|Australia,15-11-1990.*")) {
+                    result = true;
+                }
+            }
+            assertTrue(result);
+        } catch (IOException e) {
+            System.out.println("An error occurred: " + e);
+        }
     }
 
     @Test
