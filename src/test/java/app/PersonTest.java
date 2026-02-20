@@ -112,6 +112,21 @@ public class PersonTest {
     }
 
     @Test
+    public void testAddPerson_WrongAddressInformation() {
+        Person person = new Person();
+		boolean validPerson = person.addPerson("22##abcdEF", "First Name", "Last Name", "Thirty-Eight|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
+		assertFalse(validPerson);
+
+		person = new Person();
+		validPerson = person.addPerson("22##abcdEF", "First Name", "Last Name", "38|Highland Street|Melbourne|New South Wales|Australia", "15-11-1990");
+		assertFalse(validPerson);
+
+		person = new Person();
+		validPerson = person.addPerson("22##abcdEF", "First Name", "Last Name", "38|Highland Street|Melbourne|Victoria|United States", "15-11-1990");
+		assertFalse(validPerson);
+
+    }
+    @Test
     public void testAddPerson_NullBirthDate() {
         Person person = new Person();
         boolean validPerson = person.addPerson("22##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", null);
