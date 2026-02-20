@@ -75,6 +75,24 @@ public class Person {
 			return false;
 		}
 
+		// Check conditions 1, 2, and 3
+		boolean isOver18 = DateHelper.isOver18(newBirthDate);
+		boolean changeBirthDay = !birthDate.equals(newBirthDate);
+		boolean canChangeID = !((personID.charAt(0) - '0') % 2 == 0);
+
+		// Condition 1
+		if (!isOver18 && !address.equals(newAddress)) {
+			return false;
+		}
+		// Condition 2
+		if (changeBirthDay && (!personID.equals(newPersonID) || !firstName.equals(newFirstName) || !lastName.equals(newLastName) || !address.equals(newAddress))) {
+			return false;
+		}
+		// Condition 3
+		if (!canChangeID && !personID.equals(newPersonID)) {
+			return false;
+		}
+
 		try {
 			java.util.List<String> lines = Files.readAllLines(path);
 			if (lines.isEmpty()) return false;
