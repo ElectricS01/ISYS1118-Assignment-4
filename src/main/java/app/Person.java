@@ -54,7 +54,7 @@ public class Person {
 		return true;
 	}
 
-	public boolean updatePersonDetails(String existingPersonID, String newPersonID, String newFirstName, String newLastName, String newAddress, String newBirthDate) {
+	public boolean updatePersonDetails(String newPersonID, String newFirstName, String newLastName, String newAddress, String newBirthDate) {
 		 //Check if the conditions from addPerson are met
 		boolean condition1 = AddPersonHelper.checkAddPersonCondition1(newPersonID);
 		boolean condition2 = AddPersonHelper.checkAddPersonCondition2(newAddress);
@@ -106,7 +106,7 @@ public class Person {
 				String[] cols = line.split(",", -1);
 				if(cols.length < 9) continue;
 
-				if (cols[0].equals(existingPersonID)) {
+				if (cols[0].equals(personID)) {
 					targetIndex = 1;
 					break;
 				}

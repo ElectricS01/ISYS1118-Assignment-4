@@ -214,11 +214,51 @@ public class PersonTest {
 
     //updatePersonalDetails() tests
     @Test
-    public void testUpdatePersonalDetails_InvalidUpdateAddressMinor() {
+    public void testUpdatePersonDetails_ValidUpdateAddressMinor() {
+        Person person = new Person();
+        person.addPerson("23##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
+        boolean result = person.updatePersonDetails("23##abcdEF", "First Name", "Last Name", "99|New Street|Melbourne|Victoria|Australia", "15-11-1990");
+        assertTrue(result);
+    }
+
+    @Test
+    public void testUpdatePersonDetails_InvalidUpdateAddressMinor() {
         // A person under 18 should NOT be able to update their address (Condition 1)
         Person person = new Person();
         person.addPerson("23##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-2010");
-        boolean result = person.updatePersonDetails("23##abcdEF", "23##abcdEF", "First Name", "Last Name", "99|New Street|Melbourne|Victoria|Australia", "15-11-2010");
+        boolean result = person.updatePersonDetails("23##abcdEF", "First Name", "Last Name", "99|New Street|Melbourne|Victoria|Australia", "15-11-2010");
+        assertFalse(result);
+    }
+
+    @Test
+    public void testUpdatePersonDetails_ValidUpdateBirthday() {
+        Person person = new Person();
+        person.addPerson("23##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
+        boolean result = person.updatePersonDetails("23##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-2010");
+        assertTrue(result);
+    }
+
+    @Test
+    public void testUpdatePersonDetails_InvalidUpdateBirthday() {
+        Person person = new Person();
+        person.addPerson("23##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
+        boolean result = person.updatePersonDetails("23##abcdEF", "First Name", "Last Name", "99|New Street|Melbourne|Victoria|Australia", "15-11-2010");
+        assertFalse(result);
+    }
+
+    @Test
+    public void testUpdatePersonDetails_ValidUpdatePersonID() {
+        Person person = new Person();
+        person.addPerson("33##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
+        boolean result = person.updatePersonDetails("23##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
+        assertTrue(result);
+    }
+
+    @Test
+    public void testUpdatePersonDetails_InvalidUpdatePersonID() {
+        Person person = new Person();
+        person.addPerson("23##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
+        boolean result = person.updatePersonDetails("33##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
         assertFalse(result);
     }
 
