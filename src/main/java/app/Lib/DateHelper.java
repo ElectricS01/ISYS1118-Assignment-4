@@ -18,7 +18,11 @@ public class DateHelper {
     }
   }
 
-  public static boolean isDateValid(String birthDate) {
+  public static boolean isValidDate(String birthDate) {
+    if (birthDate == null) {
+      return false;
+    }
+
     try {
       LocalDate.parse(birthDate, formatter);
       return true;
