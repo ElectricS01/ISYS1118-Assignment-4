@@ -93,29 +93,49 @@ public class Person {
 				}
 			}
 
-			if (targetIndex == -1) {
-				return false;
-			}
+			if (targetIndex == -1) return false;
 
-			// If changing ID, this method ensure new ID is not already used by another row
-			if (!existingPersonID.equals(newPersonID)) {
-				for (int i = 1; i < lines.size(); i++) {
-					if (i == targetIndex) continue;
-					String line = lines.get(i);
-					if (line == null || line.trim().isEmpty()) continue;
+			String[] oldCols = lines.get(targetIndex).split(",", -1);
 
-					String[] cols = line.split(",", -1);
-					if (cols.length < 1) continue;
+			String oldPersonID = oldCols[0];
+			String oldFirstName = oldCols[1];
+			String oldLastName = oldCols[2];
+			String oldAddress = oldCols[3];
+			String oldBirthDate = oldCols[4];
 
-					if (cols[0].equals(newPersonID)) {
-						return false; // duplicate ID
-					}
+			// If first digit of existing ID is even, ID cannot change
+			char firstChar = oldPersonID.charAt(0);
+			if (Character.isDigit(firstChar)) {
+				int digit = Character.getNumericValue(firstChar);
+				if (digit % 2 == 0 && !oldPersonID.equals(newPersonID)) {
+					return false;
 				}
 			}
 
+			// If birthday changes, nothing else can change
+			if (!oldBirthDate.equals(newBirthDate)) {
+				if (!oldPersonID.equals(newPersonID) ||
+						!oldFirstName.equals(newFirstName) ||
+						!oldLastName.equals(newLastName) ||
+						!oldAddress.equals(newAddress)) {
+					return false;
+				}
+			}
+
+			// If under 18, address cannot change
+			java.time.LocalDate birth =
+					java.time.LocalDate.parse(oldBirthDate,
+							java.time.format.DateTimeFormatter.ofPattern("dd-MM-uuuu"));
+
+			int age = java.time.Period.between(birth,
+					java.time.LocalDate.now()).getYears();
+
+			if (age < 18 && !oldAddress.equals(newAddress)) {
+				return false;
+			}
+
+
 			// Preserve existing ID docs columns (passport, driversLicense, medicareCard, studentCard)
-			String[] oldCols = lines.get(targetIndex).split(",", -1);
-			if (oldCols.length < 9) return false;
 
 			String passport = oldCols[5];
 			String driversLicense = oldCols[6];
