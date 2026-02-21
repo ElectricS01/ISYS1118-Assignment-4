@@ -72,9 +72,6 @@ public class DriversLicenceTest {
 		assertFalse(licence.isValid());
 	}
 
-	// -----------------------------
-	// Constants / CSV / save
-	// -----------------------------
 	@Test
 	void testConstants() {
 		var licence = new DriversLicence("AB12345678", "22##abcdEF", "Alice", "01-01-2000", "Australia", "01-01-2020", "01-01-2030", "1", "Car");

@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import app.Lib.Documents.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -11,6 +12,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class AddIdTest {
+
+    @BeforeEach
+    public void setUp() throws IOException {
+        TestHelper.deleteCsvFiles();
+    }
 
     @Test
     public void testAddID_ValidPassport() {
@@ -31,7 +37,7 @@ public class AddIdTest {
 
         try {
             result = false;
-            java.util.List<String> lines = Files.readAllLines(Path.of("/people.csv"));
+            java.util.List<String> lines = Files.readAllLines(Path.of("./people.csv"));
             for (String line : lines) {
                 if (line.matches("22##abcdEF,First Name,Last Name,32\\|Highland Street\\|Melbourne\\|Victoria\\|Australia,15-11-1990,AB123456.*")) {
                     result = true;
@@ -63,7 +69,7 @@ public class AddIdTest {
 
         try {
             result = false;
-            java.util.List<String> lines = Files.readAllLines(Path.of("/people.csv"));
+            java.util.List<String> lines = Files.readAllLines(Path.of("./people.csv"));
             for (String line : lines) {
                 if (line.matches("23##abcdEF,First Name,Last Name,32\\|Highland Street\\|Melbourne\\|Victoria\\|Australia,15-11-1990,.*,AB12345678.*")) {
                     result = true;
@@ -93,9 +99,9 @@ public class AddIdTest {
 
         try {
             result = false;
-            java.util.List<String> lines = Files.readAllLines(Path.of("/people.csv"));
+            java.util.List<String> lines = Files.readAllLines(Path.of("./people.csv"));
             for (String line : lines) {
-                if (line.matches("24##abcdEF,First Name,Last Name,32\\|Highland Street\\|Melbourne\\|Victoria\\|Australia,15-11-1990,.*,.*,AB1234567.*")) {
+                if (line.matches("24##abcdEF,First Name,Last Name,32\\|Highland Street\\|Melbourne\\|Victoria\\|Australia,15-11-1990,.*,.*,123456789.*")) {
                     result = true;
                 }
             }
@@ -123,9 +129,9 @@ public class AddIdTest {
 
         try {
             result = false;
-            java.util.List<String> lines = Files.readAllLines(Path.of("/people.csv"));
+            java.util.List<String> lines = Files.readAllLines(Path.of("./people.csv"));
             for (String line : lines) {
-                if (line.matches("25##abcdEF,First Name,Last Name,32\\|Highland Street\\|Melbourne\\|Victoria\\|Australia,15-11-1990,.*,.*,.*,123456789012")) {
+                if (line.matches("25##abcdEF,First Name,Last Name,32\\|Highland Street\\|Melbourne\\|Victoria\\|Australia,15-11-2010,.*,.*,.*,123456789012")) {
                     result = true;
                 }
             }
@@ -137,20 +143,20 @@ public class AddIdTest {
 
     @Test
     public void testAddID_InValidPassport() {
-    Person person = new Person();
-    person.addPerson("22##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
-    IdDocument passport = new Passport(
-                "23123456",
-                "22##abcdEF",
-                "First Name Last Name",
-                "15-11-1990",
-                "Australia",
-                "01-01-2020",
-                "01-01-2030",
-                "AU-GOV"
-        );
-    boolean result = person.addID(passport);
-    assertFalse(result);
+        Person person = new Person();
+        person.addPerson("22##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
+        IdDocument passport = new Passport(
+                    "23123456",
+                    "22##abcdEF",
+                    "First Name Last Name",
+                    "15-11-1990",
+                    "Australia",
+                    "01-01-2020",
+                    "01-01-2030",
+                    "AU-GOV"
+            );
+        boolean result = person.addID(passport);
+        assertFalse(result);
     }
 
     @Test
@@ -179,7 +185,7 @@ public class AddIdTest {
 
         IdDocument dl = new DriversLicence(
                 "AB1234567", // 9 chars
-                "82##abcdEF",
+                "51##abcdEF",
                 "First Last",
                 "15-11-1990",
                 "Australia",
@@ -213,6 +219,44 @@ public class AddIdTest {
     }
 
     @Test
+    public void testAddID_MedicareCard_InvalidIdWrongLength() {
+        Person person = new Person();
+        person.addPerson("27##abcdEF", "First", "Last",
+                "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
+
+        IdDocument mc = new MedicareCard(
+                "12345678", // 8 digits, should be 9
+                "27##abcdEF",
+                "First Last",
+                "15-11-1990",
+                "Australia",
+                "01-01-2020",
+                "01-01-2030"
+        );
+
+        assertFalse(person.addID(mc));
+    }
+
+    @Test
+    public void testAddID_StudentCard_InvalidIdWrongLength() {
+        Person person = new Person();
+        person.addPerson("28##abcdEF", "First", "Last",
+                "32|Highland Street|Melbourne|Victoria|Australia", "15-11-2010");
+
+        IdDocument sc = new StudentCard(
+                "12345678901", // 11 digits, should be 12
+                "28##abcdEF",
+                "First Last",
+                "15-11-2010",
+                "Australia",
+                "01-01-2015",
+                "01-01-2030"
+        );
+
+        assertFalse(person.addID(sc));
+    }
+
+    @Test
     public void testAddID_StudentCard_Adult() {
         Person person = new Person();
         person.addPerson("73##abcdEF", "First", "Last", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
@@ -230,6 +274,25 @@ public class AddIdTest {
         assertFalse(person.addID(student));
     }
 
+    @Test
+    public void testAddID_Passport_ExpiredDocument() {
+        Person person = new Person();
+        person.addPerson("32##abcdEF", "First", "Last",
+                "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
+
+        IdDocument passport = new Passport(
+                "AB123456",
+                "32##abcdEF",
+                "First Last",
+                "15-11-1990",
+                "Australia",
+                "01-01-2010",
+                "01-01-2020", // expired
+                "AU-GOV"
+        );
+
+        assertFalse(person.addID(passport));
+    }
 
     @Test
     public void testAddID_PersonMustExist() {
