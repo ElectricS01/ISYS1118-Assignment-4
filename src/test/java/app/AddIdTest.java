@@ -10,6 +10,10 @@ import app.Lib.Documents.IdDocument;
 import app.Lib.Documents.Passport;
 import app.Lib.Documents.StudentCard;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 public class AddIdTest {
 
     @Test
@@ -28,6 +32,19 @@ public class AddIdTest {
         );
     boolean result = person.addID(passport);
     assertTrue(result);
+
+    try {
+        result = false;
+        java.util.List<String> lines = Files.readAllLines(Path.of("people.csv"));
+        for (String line : lines) {
+            if (line.matches("22##abcdEF,First Name,Last Name,32\\|Highland Street\\|Melbourne\\|Victoria\\|Australia,15-11-1990,AB123456.*")) {
+                result = true;
+            }
+        }
+        assertTrue(result);
+    } catch (IOException e) {
+        System.out.println("An error occurred: " + e);
+    }
     }
 
     @Test
