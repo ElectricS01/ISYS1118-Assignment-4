@@ -32,12 +32,12 @@ public class DriversLicence extends IdDocument {
 
   @Override
   protected String getFileName() {
-    return "drivers_licences.csv";1
+    return "drivers_licences.csv";
   }
 
   @Override
   protected String extraCsvHeader() {
-    return ",authority,vehicleType";
+    return ",version,vehicleType";
   }
 
   @Override

@@ -21,8 +21,8 @@ public class Passport extends IdDocument {
   public boolean isValid() {
     if (areDatesInvalid()) return false;
 
-      if (id == null || personID == null || name == null || dateOfBirth == null || country == null || authority == null) return false;
-      if (id.isEmpty() || personID.isEmpty() || name.isEmpty() || dateOfBirth.isEmpty() || country.isEmpty() || authority.isEmpty()) return false;
+    if (id == null || personID == null || name == null || dateOfBirth == null || country == null || authority == null) return false;
+    if (id.isEmpty() || personID.isEmpty() || name.isEmpty() || dateOfBirth.isEmpty() || country.isEmpty() || authority.isEmpty()) return false;
 
     return id.matches("^[A-Z]{2}\\d{6}$");
   }

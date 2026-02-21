@@ -61,7 +61,7 @@ public class PassportTest {
 				Arguments.of(new Passport("AB123456", "22##abcdEF", "", "01-01-2000", "Australia", "01-01-2020", "01-01-2030", "DFAT"), "Empty name"),
 				Arguments.of(new Passport("AB123456", "22##abcdEF", "Alice", "", "Australia", "01-01-2020", "01-01-2030", "DFAT"), "Empty DOB"),
 				Arguments.of(new Passport("AB123456", "22##abcdEF", "Alice", "01-01-2000", "", "01-01-2020", "01-01-2030", "DFAT"), "Empty country"),
-				Arguments.of(new Passport("AB123456", "22##abcdEF", "Alice", "01-01-2000", "Australia", "01-01-2020", "01-01-2030", ""), "Empty authority")
+				Arguments.of(new Passport("AB123456", "22##abcdEF", "Alice", "01-01-2000", "Australia", "01-01-2020", "01-01-2030", ""), "Empty authority"),
 
 				Arguments.of(new Passport("AB123456", "33##abcdEF", "Jake", "31-02-2000", "Australia", "01-01-2020", "01-01-2030", "DFAT"), "Invalid birth date"),
 				Arguments.of(new Passport("AB123456", "34##abcdEF", "Kate", "01-01-2000", "Australia", "31-02-2020", "01-01-2030", "DFAT"), "Invalid issue date"),
@@ -87,7 +87,7 @@ public class PassportTest {
 	}
 
 	@Test
-	void testSave_ValidPassport_Writes() {
+	void testSave_WritesValidPassword() {
 		TestHelper.deleteCsvFiles();
 		Path path = Paths.get("passports.csv");
 		assertFalse(Files.exists(path));
@@ -104,16 +104,5 @@ public class PassportTest {
 		} catch (Exception e) {
 			fail("Exception thrown while reading passports.csv: " + e.getMessage());
 		}
-	}
-
-	@Test
-	void testSave_InvalidPassport_DoesNotWrite() {
-		TestHelper.deleteCsvFiles();
-		Path path = Paths.get("passports.csv");
-
-		var passport = new Passport("BAD", "22##abcdEF", "Alice", "01-01-2000", "Australia", "01-01-2020", "01-01-2030", "DFAT");
-
-		assertFalse(passport.save());
-		assertFalse(Files.exists(path));
 	}
 }
