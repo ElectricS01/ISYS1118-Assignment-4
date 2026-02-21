@@ -13,10 +13,10 @@ mvn clean test
 
 ## Generate Gource video (macOS)
 ```shell
-gource --seconds-per-day 5 -1280x720 -o - | ffmpeg -y -r 60 -f image2pipe -vcodec ppm -i - -vcodec h264_videotoolbox -preset slower -pix_fmt yuv420p -crf 1 -threads 0 -bf 0 gource.mp4
+gource -1280x720 -o - | ffmpeg -y -r 60 -f image2pipe -vcodec ppm -i - -vcodec h264_videotoolbox -preset slower -pix_fmt yuv420p -crf 1 -threads 0 -bf 0 gource.mp4
 ```
 
 ## Generate Gource video (Windows)
 ```shell
-gource --seconds-per-day 5 -1280x720 -o - | ffmpeg -y -r 60 -f image2pipe -vcodec ppm -i - -vcodec libvpx -b 10000K gource.webm
+gource -1280x720 -o - | ffmpeg -y -r 60 -f image2pipe -vcodec ppm -i - -vcodec libvpx -b 10000K gource.webm
 ```
