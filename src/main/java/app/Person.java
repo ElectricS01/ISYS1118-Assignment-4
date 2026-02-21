@@ -159,14 +159,17 @@ public class Person {
 		if (personID == null) {
 			return false;
 		}
+
 		if (idDocument.childrenOnly() && !DateHelper.isUnder18(birthDate, LocalDate.now())) {
 			return false;
 		}
 
+		// Checks that personID is same
 		if (!personID.equals(idDocument.getPersonID())) {
 			return false;
 		}
 
+		// Checks that person exists
 		try {
 			java.util.List<String> lines = Files.readAllLines(Path.of("/people.csv"));
 			boolean personExists = false;
