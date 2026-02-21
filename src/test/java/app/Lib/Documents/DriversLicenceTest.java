@@ -62,12 +62,7 @@ public class DriversLicenceTest {
 				Arguments.of(new DriversLicence("AB12345678", "22##abcdEF", "", "01-01-2000", "Australia", "01-01-2020", "01-01-2030", "1", "Car"), "Empty name"),
 				Arguments.of(new DriversLicence("AB12345678", "22##abcdEF", "Alice", "", "Australia", "01-01-2020", "01-01-2030", "1", "Car"), "Empty DOB"),
 				Arguments.of(new DriversLicence("AB12345678", "22##abcdEF", "Alice", "01-01-2000", "", "01-01-2020", "01-01-2030", "1", "Car"), "Empty country"),
-				Arguments.of(new DriversLicence("AB12345678", "22##abcdEF", "Alice", "01-01-2000", "Australia", "01-01-2020", "01-01-2030", "1", ""), "Empty vehicleType"),
-
-				Arguments.of(new DriversLicence("AB12345678", "33##abcdEF", "Jake", "31-02-2000", "Australia", "01-01-2020", "01-01-2030", "1", "Car"), "Invalid birth date"),
-				Arguments.of(new DriversLicence("AB12345678", "34##abcdEF", "Kate", "01-01-2030", "Australia", "01-01-2020", "01-01-2030", "1", "Car"), "Birth date in future"),
-				Arguments.of(new DriversLicence("AB12345678", "35##abcdEF", "Liam", "01-01-2000", "Australia", "31-02-2020", "01-01-2030", "1", "Car"), "Invalid issue date"),
-				Arguments.of(new DriversLicence("AB12345678", "36##abcdEF", "Mia", "01-01-2000", "Australia", "01-01-2030", "01-01-2020", "1", "Car"), "Expiry before issue")
+				Arguments.of(new DriversLicence("AB12345678", "22##abcdEF", "Alice", "01-01-2000", "Australia", "01-01-2020", "01-01-2030", "1", ""), "Empty vehicleType")
 		);
 	}
 

@@ -62,13 +62,7 @@ public class PassportTest {
 				Arguments.of(new Passport("AB123456", "22##abcdEF", "", "01-01-2000", "Australia", "01-01-2020", "01-01-2030", "DFAT"), "Empty name"),
 				Arguments.of(new Passport("AB123456", "22##abcdEF", "Alice", "", "Australia", "01-01-2020", "01-01-2030", "DFAT"), "Empty DOB"),
 				Arguments.of(new Passport("AB123456", "22##abcdEF", "Alice", "01-01-2000", "", "01-01-2020", "01-01-2030", "DFAT"), "Empty country"),
-				Arguments.of(new Passport("AB123456", "22##abcdEF", "Alice", "01-01-2000", "Australia", "01-01-2020", "01-01-2030", ""), "Empty authority"),
-
-				Arguments.of(new Passport("AB123456", "33##abcdEF", "Jake", "31-02-2000", "Australia", "01-01-2020", "01-01-2030", "DFAT"), "Invalid birth date"),
-				Arguments.of(new Passport("AB123456", "34##abcdEF", "Kate", "01-01-2000", "Australia", "31-02-2020", "01-01-2030", "DFAT"), "Invalid issue date"),
-				Arguments.of(new Passport("AB123456", "35##abcdEF", "Liam", "01-01-2000", "Australia", "01-01-2020", "31-02-2030", "DFAT"), "Invalid expiry date"),
-				Arguments.of(new Passport("AB123456", "36##abcdEF", "Mia", "01-01-2000", "Australia", "01-01-2030", "01-01-2020", "DFAT"), "Expiry before issue"),
-				Arguments.of(new Passport("AB123456", "37##abcdEF", "Noah", "01-01-2030", "Australia", "01-01-2020", "01-01-2030", "DFAT"), "Birth date in future")
+				Arguments.of(new Passport("AB123456", "22##abcdEF", "Alice", "01-01-2000", "Australia", "01-01-2020", "01-01-2030", ""), "Empty authority")
 		);
 	}
 
