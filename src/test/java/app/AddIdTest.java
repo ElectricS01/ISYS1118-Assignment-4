@@ -3,12 +3,8 @@ package app;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import app.Lib.Documents.*;
 import org.junit.jupiter.api.Test;
-
-import app.Lib.Documents.DriversLicence;
-import app.Lib.Documents.IdDocument;
-import app.Lib.Documents.Passport;
-import app.Lib.Documents.StudentCard;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,33 +14,125 @@ public class AddIdTest {
 
     @Test
     public void testAddID_ValidPassport() {
-    Person person = new Person();
-    person.addPerson("22##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
-    IdDocument passport = new Passport(
-                "AB123456",
-                "22##abcdEF",
-                "First Name Last Name",
+        Person person = new Person();
+        person.addPerson("22##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
+        IdDocument passport = new Passport(
+                    "AB123456",
+                    "22##abcdEF",
+                    "First Name Last Name",
+                    "15-11-1990",
+                    "Australia",
+                    "01-01-2020",
+                    "01-01-2030",
+                    "AU-GOV"
+            );
+        boolean result = person.addID(passport);
+        assertTrue(result);
+
+        try {
+            result = false;
+            java.util.List<String> lines = Files.readAllLines(Path.of("/people.csv"));
+            for (String line : lines) {
+                if (line.matches("22##abcdEF,First Name,Last Name,32\\|Highland Street\\|Melbourne\\|Victoria\\|Australia,15-11-1990,AB123456.*")) {
+                    result = true;
+                }
+            }
+            assertTrue(result);
+        } catch (IOException e) {
+            System.out.println("An error occurred: " + e);
+        }
+    }
+
+    @Test
+    public void testAddID_ValidDriversLicence() {
+        Person person = new Person();
+        person.addPerson("23##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
+        IdDocument driversLicence = new DriversLicence(
+                "AB12345678",
+                "23##abcdEF",
+                "First Last",
                 "15-11-1990",
                 "Australia",
                 "01-01-2020",
                 "01-01-2030",
-                "AU-GOV"
+                "1",
+                "CAR"
         );
-    boolean result = person.addID(passport);
-    assertTrue(result);
-
-    try {
-        result = false;
-        java.util.List<String> lines = Files.readAllLines(Path.of("people.csv"));
-        for (String line : lines) {
-            if (line.matches("22##abcdEF,First Name,Last Name,32\\|Highland Street\\|Melbourne\\|Victoria\\|Australia,15-11-1990,AB123456.*")) {
-                result = true;
-            }
-        }
+        boolean result = person.addID(driversLicence);
         assertTrue(result);
-    } catch (IOException e) {
-        System.out.println("An error occurred: " + e);
+
+        try {
+            result = false;
+            java.util.List<String> lines = Files.readAllLines(Path.of("/people.csv"));
+            for (String line : lines) {
+                if (line.matches("23##abcdEF,First Name,Last Name,32\\|Highland Street\\|Melbourne\\|Victoria\\|Australia,15-11-1990,.*,AB12345678.*")) {
+                    result = true;
+                }
+            }
+            assertTrue(result);
+        } catch (IOException e) {
+            System.out.println("An error occurred: " + e);
+        }
     }
+
+    @Test
+    public void testAddID_ValidMedicareCard() {
+        Person person = new Person();
+        person.addPerson("24##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
+        IdDocument medicareCard = new MedicareCard(
+                "123456789",
+                "24##abcdEF",
+                "First Last",
+                "15-11-1990",
+                "Australia",
+                "01-01-2020",
+                "01-01-2030"
+        );
+        boolean result = person.addID(medicareCard);
+        assertTrue(result);
+
+        try {
+            result = false;
+            java.util.List<String> lines = Files.readAllLines(Path.of("/people.csv"));
+            for (String line : lines) {
+                if (line.matches("24##abcdEF,First Name,Last Name,32\\|Highland Street\\|Melbourne\\|Victoria\\|Australia,15-11-1990,.*,.*,AB1234567.*")) {
+                    result = true;
+                }
+            }
+            assertTrue(result);
+        } catch (IOException e) {
+            System.out.println("An error occurred: " + e);
+        }
+    }
+
+    @Test
+    public void testAddID_ValidStudentCard() {
+        Person person = new Person();
+        person.addPerson("25##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-2010");
+        IdDocument studentCard = new StudentCard(
+                "123456789012",
+                "25##abcdEF",
+                "First Last",
+                "15-11-2010",
+                "Australia",
+                "01-01-2015",
+                "01-01-2030"
+        );
+        boolean result = person.addID(studentCard);
+        assertTrue(result);
+
+        try {
+            result = false;
+            java.util.List<String> lines = Files.readAllLines(Path.of("/people.csv"));
+            for (String line : lines) {
+                if (line.matches("25##abcdEF,First Name,Last Name,32\\|Highland Street\\|Melbourne\\|Victoria\\|Australia,15-11-1990,.*,.*,.*,123456789012")) {
+                    result = true;
+                }
+            }
+            assertTrue(result);
+        } catch (IOException e) {
+            System.out.println("An error occurred: " + e);
+        }
     }
 
     @Test
