@@ -13,7 +13,7 @@ public class AddPersonHelperTest {
 
   @BeforeAll
   static void setup() {
-    TestHelper.clearCsvFiles();
+    TestHelper.deleteCsvFiles();
     new Person()
         .addPerson(
             "22##abcdEF",

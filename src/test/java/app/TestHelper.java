@@ -4,7 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class TestHelper {
-  public static void clearCsvFiles() {
+  public static void deleteCsvFiles() {
     try {
       Files.deleteIfExists(Paths.get("people.csv"));
       Files.deleteIfExists(Paths.get("passports.csv"));

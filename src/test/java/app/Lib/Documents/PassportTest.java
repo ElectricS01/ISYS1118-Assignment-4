@@ -18,7 +18,7 @@ public class PassportTest {
 
   @BeforeAll
   static void setup() {
-    TestHelper.clearCsvFiles();
+    TestHelper.deleteCsvFiles();
   }
 
 	static Stream<Arguments> validPassportProvider() {
@@ -48,6 +48,21 @@ public class PassportTest {
 				Arguments.of(new Passport("AB1234567", "28##abcdEF", "Grace", "01-01-2000", "Australia", "01-01-2020", "01-01-2030", "DFAT"), "Too long"),
 				Arguments.of(new Passport("AB12 456", "29##abcdEF", "Hank", "01-01-2000", "Australia", "01-01-2020", "01-01-2030", "DFAT"), "Contains space"),
 				Arguments.of(new Passport("AB12-456", "32##abcdEF", "Ivy", "01-01-2000", "Australia", "01-01-2020", "01-01-2030", "DFAT"), "Contains symbol"),
+
+				Arguments.of(new Passport(null, "22##abcdEF", "Alice", "01-01-2000", "Australia", "01-01-2020", "01-01-2030", "DFAT"), "Null ID"),
+				Arguments.of(new Passport("AB123456", null, "Alice", "01-01-2000", "Australia", "01-01-2020", "01-01-2030", "DFAT"), "Null personID"),
+				Arguments.of(new Passport("AB123456", "22##abcdEF", null, "01-01-2000", "Australia", "01-01-2020", "01-01-2030", "DFAT"), "Null name"),
+				Arguments.of(new Passport("AB123456", "22##abcdEF", "Alice", null, "Australia", "01-01-2020", "01-01-2030", "DFAT"), "Null DOB"),
+				Arguments.of(new Passport("AB123456", "22##abcdEF", "Alice", "01-01-2000", null, "01-01-2020", "01-01-2030", "DFAT"), "Null country"),
+				Arguments.of(new Passport("AB123456", "22##abcdEF", "Alice", "01-01-2000", "Australia", "01-01-2020", "01-01-2030", null), "Null authority"),
+
+				Arguments.of(new Passport("", "22##abcdEF", "Alice", "01-01-2000", "Australia", "01-01-2020", "01-01-2030", "DFAT"), "Empty ID"),
+				Arguments.of(new Passport("AB123456", "", "Alice", "01-01-2000", "Australia", "01-01-2020", "01-01-2030", "DFAT"), "Empty personID"),
+				Arguments.of(new Passport("AB123456", "22##abcdEF", "", "01-01-2000", "Australia", "01-01-2020", "01-01-2030", "DFAT"), "Empty name"),
+				Arguments.of(new Passport("AB123456", "22##abcdEF", "Alice", "", "Australia", "01-01-2020", "01-01-2030", "DFAT"), "Empty DOB"),
+				Arguments.of(new Passport("AB123456", "22##abcdEF", "Alice", "01-01-2000", "", "01-01-2020", "01-01-2030", "DFAT"), "Empty country"),
+				Arguments.of(new Passport("AB123456", "22##abcdEF", "Alice", "01-01-2000", "Australia", "01-01-2020", "01-01-2030", ""), "Empty authority")
+
 				Arguments.of(new Passport("AB123456", "33##abcdEF", "Jake", "31-02-2000", "Australia", "01-01-2020", "01-01-2030", "DFAT"), "Invalid birth date"),
 				Arguments.of(new Passport("AB123456", "34##abcdEF", "Kate", "01-01-2000", "Australia", "31-02-2020", "01-01-2030", "DFAT"), "Invalid issue date"),
 				Arguments.of(new Passport("AB123456", "35##abcdEF", "Liam", "01-01-2000", "Australia", "01-01-2020", "31-02-2030", "DFAT"), "Invalid expiry date"),
@@ -72,8 +87,8 @@ public class PassportTest {
 	}
 
 	@Test
-	void testSave() {
-		TestHelper.clearCsvFiles();
+	void testSave_ValidPassport_Writes() {
+		TestHelper.deleteCsvFiles();
 		Path path = Paths.get("passports.csv");
 		assertFalse(Files.exists(path));
 
@@ -89,5 +104,16 @@ public class PassportTest {
 		} catch (Exception e) {
 			fail("Exception thrown while reading passports.csv: " + e.getMessage());
 		}
+	}
+
+	@Test
+	void testSave_InvalidPassport_DoesNotWrite() {
+		TestHelper.deleteCsvFiles();
+		Path path = Paths.get("passports.csv");
+
+		var passport = new Passport("BAD", "22##abcdEF", "Alice", "01-01-2000", "Australia", "01-01-2020", "01-01-2030", "DFAT");
+
+		assertFalse(passport.save());
+		assertFalse(Files.exists(path));
 	}
 }

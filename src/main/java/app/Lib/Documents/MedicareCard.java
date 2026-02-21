@@ -17,6 +17,9 @@ public class MedicareCard extends IdDocument {
   public boolean isValid() {
     if (areDatesInvalid()) return false;
 
+    if (id == null || personID == null || name == null || dateOfBirth == null || country == null) return false;
+    if (id.isEmpty() || personID.isEmpty() || name.isEmpty() || dateOfBirth.isEmpty() || country.isEmpty()) return false;
+
     return id.matches("\\d{9}");
   }
 

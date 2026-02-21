@@ -24,12 +24,15 @@ public class DriversLicence extends IdDocument {
   public boolean isValid() {
     if (areDatesInvalid()) return false;
 
+    if (id == null || personID == null || name == null || dateOfBirth == null || country == null || vehicleType == null) return false;
+    if (id.isEmpty() || personID.isEmpty() || name.isEmpty() || dateOfBirth.isEmpty() || country.isEmpty() || vehicleType.isEmpty()) return false;
+
     return id.matches("^[A-Z]{2}\\d{8}$");
   }
 
   @Override
   protected String getFileName() {
-    return "drivers_licences.csv";
+    return "drivers_licences.csv";1
   }
 
   @Override
