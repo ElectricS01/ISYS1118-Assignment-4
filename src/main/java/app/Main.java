@@ -5,9 +5,20 @@ import app.Lib.Documents.Passport;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Main {
 	public static void main(String[] args) {
+		try {
+			Files.deleteIfExists(Paths.get("people.csv"));
+			Files.deleteIfExists(Paths.get("passports.csv"));
+			Files.deleteIfExists(Paths.get("drivers_licences.csv"));
+			Files.deleteIfExists(Paths.get("medicare_cards.csv"));
+			Files.deleteIfExists(Paths.get("student_cards.csv"));
+		} catch (java.io.IOException e) {
+			e.printStackTrace();
+		}
+
 		Person person = new Person();
 		System.out.println(person.addPerson("22##abcdEF", "John", "Doe", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990"));
 		printCSV();
