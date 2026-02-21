@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public abstract class IdDocument {
 
   protected String id;
-  protected String personId;
+  protected String personID;
   protected String name;
   protected String dateOfBirth;
   protected String country;
@@ -20,14 +20,14 @@ public abstract class IdDocument {
 
   public IdDocument(
       String id,
-      String personId,
+      String personID,
       String name,
       String dateOfBirth,
       String country,
       String dateOfIssue,
       String dateOfExpiry) {
     this.id = id;
-    this.personId = personId;
+    this.personID = personID;
     this.name = name;
     this.dateOfBirth = dateOfBirth;
     this.country = country;
@@ -56,7 +56,9 @@ public abstract class IdDocument {
 
   protected abstract String getFileName();
 
-  public String getPersonID() { return personId; }
+  public String getPersonID() {
+    return personID;
+  }
 
   public boolean childrenOnly() {
     return false;
@@ -71,13 +73,13 @@ public abstract class IdDocument {
   }
 
   public final String getCsvHeader() {
-    return "id,personId,name,dateOfBirth,country,dateOfIssue,dateOfExpiry" + extraCsvHeader();
+    return "id,personID,name,dateOfBirth,country,dateOfIssue,dateOfExpiry" + extraCsvHeader();
   }
 
   public final String toCsvRow() {
     return id
         + ","
-        + personId
+        + personID
         + ","
         + name
         + ","
@@ -96,8 +98,7 @@ public abstract class IdDocument {
       File file = new File(getFileName());
       boolean newFile = file.createNewFile();
 
-      try (BufferedWriter writer =
-               new BufferedWriter(new FileWriter(file, true))) {
+      try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
 
         if (newFile) {
           writer.write(getCsvHeader());

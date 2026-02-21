@@ -106,7 +106,10 @@ public class AddPersonHelper {
 
     public static boolean checkPersonExists(String personID) {
         try {
+            // Check if personID already exists in people.csv
             List<String> lines = Files.readAllLines(Path.of("people.csv"));
+
+            // Go through each line and check if it starts with the personID followed by a comma
             for (String line : lines) {
                 if (line.matches(personID + ",.*")) {
                     return true;

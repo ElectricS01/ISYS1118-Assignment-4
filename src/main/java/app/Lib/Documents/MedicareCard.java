@@ -4,13 +4,13 @@ public class MedicareCard extends IdDocument {
 
   public MedicareCard(
       String id,
-      String personId,
+      String personID,
       String name,
       String dateOfBirth,
       String country,
       String dateOfIssue,
       String dateOfExpiry) {
-    super(id, personId, name, dateOfBirth, country, dateOfIssue, dateOfExpiry);
+    super(id, personID, name, dateOfBirth, country, dateOfIssue, dateOfExpiry);
   }
 
   @Override

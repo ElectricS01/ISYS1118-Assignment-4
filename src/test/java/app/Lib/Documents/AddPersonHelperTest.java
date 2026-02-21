@@ -11,19 +11,25 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AddPersonHelperTest {
 
-	@BeforeAll
-	public static void setup() {
-		TestHelper.clearPeopleFile();
-		new Person().addPerson("22##abcdEF", "John", "Doe", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
-	}
+  @BeforeAll
+  static void setup() {
+    TestHelper.clearPeopleFile();
+    new Person()
+        .addPerson(
+            "22##abcdEF",
+            "John",
+            "Doe",
+            "32|Highland Street|Melbourne|Victoria|Australia",
+            "15-11-1990");
+  }
 
-	@Test
-	public void testCheckPersonExists_ValidPerson() {
-		assertTrue(AddPersonHelper.checkPersonExists("22##abcdEF"));
-	}
+  @Test
+  void testCheckPersonExists_ValidPersonID() {
+    assertTrue(AddPersonHelper.checkPersonExists("22##abcdEF"));
+  }
 
-	@Test
-	public void testCheckPersonExists_InvalidPerson() {
-		assertFalse(AddPersonHelper.checkPersonExists("33##abcdEF"));
-	}
+  @Test
+  void testCheckPersonExists_InvalidPersonId() {
+    assertFalse(AddPersonHelper.checkPersonExists("33##abcdEF"));
+  }
 }

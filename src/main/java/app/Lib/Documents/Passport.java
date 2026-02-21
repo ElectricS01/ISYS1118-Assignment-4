@@ -6,14 +6,14 @@ public class Passport extends IdDocument {
 
   public Passport(
       String id,
-      String personId,
+      String personID,
       String name,
       String dateOfBirth,
       String country,
       String dateOfIssue,
       String dateOfExpiry,
       String authority) {
-    super(id, personId, name, dateOfBirth, country, dateOfIssue, dateOfExpiry);
+    super(id, personID, name, dateOfBirth, country, dateOfIssue, dateOfExpiry);
     this.authority = authority;
   }
 
@@ -21,7 +21,7 @@ public class Passport extends IdDocument {
   public boolean isValid() {
     if (areDatesInvalid()) return false;
 
-    return id.matches("^[A-Za-z]{2}\\d{6}$");
+    return id.matches("^[A-Z]{2}\\d{6}$");
   }
 
   @Override
