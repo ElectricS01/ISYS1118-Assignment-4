@@ -10,6 +10,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 
+import static app.Lib.AddPersonHelper.checkPersonExists;
+
 
 public class Person {
 	private String personID;
@@ -156,10 +158,12 @@ public class Person {
 	}
 
 	public boolean addID(IdDocument idDocument) {
-		if (personID == null) {
+		// Check person exists
+		if (!checkPersonExists(personID)) {
 			return false;
 		}
 
+		// If ID document is for children only, check person is under 18
 		if (idDocument.childrenOnly() && !DateHelper.isUnder18(birthDate, LocalDate.now())) {
 			return false;
 		}
@@ -169,23 +173,7 @@ public class Person {
 			return false;
 		}
 
-		// Checks that person exists
-		try {
-			java.util.List<String> lines = Files.readAllLines(Path.of("/people.csv"));
-			boolean personExists = false;
-			for (String line : lines) {
-				String[] splitLine = line.split(",");
-				if (splitLine[0].equals(idDocument.getPersonID())) {
-					personExists = true;
-				}
-			}
-			if (!personExists) {
-				return false;
-			}
-		} catch (IOException e) {
-			System.out.println("An error occurred: " + e);
-		}
-
+		// Check ID document is valid and save it
 		return idDocument.isValid() && idDocument.save();
 	}
 }

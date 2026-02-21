@@ -58,14 +58,14 @@ public class DateHelperTest {
 
 	@ParameterizedTest(name = "{1}")
 	@MethodSource("invalidDateProvider")
-	void testIsValidDate_Invalid(String input, String label) {
-		assertFalse(DateHelper.isValidDate(input), "Date should be invalid: " + input);
+	void testParseDate_Invalid(String input, String label) {
+		assertNull(DateHelper.parseDate(input), "Date should fail to parse: " + input);
 	}
 
 	@ParameterizedTest(name = "{1}")
 	@MethodSource("invalidDateProvider")
-	void testParseDate_Invalid(String input, String label) {
-		assertNull(DateHelper.parseDate(input), "Date should fail to parse: " + input);
+	void testIsValidDate_Invalid(String input, String label) {
+		assertFalse(DateHelper.isValidDate(input), "Date should be invalid: " + input);
 	}
 
 	static Stream<Arguments> under18Provider() {

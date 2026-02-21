@@ -1,10 +1,14 @@
 package app.Lib;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
+import java.util.List;
 
 public class AddPersonHelper {
     // Checks for valid personID
@@ -98,5 +102,20 @@ public class AddPersonHelper {
         }
 
         return true;
+    }
+
+    public static boolean checkPersonExists(String personID) {
+        try {
+            List<String> lines = Files.readAllLines(Path.of("people.csv"));
+            for (String line : lines) {
+                if (line.matches(personID + ",.*")) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred: " + e);
+        }
+
+        return false;
     }
 }
