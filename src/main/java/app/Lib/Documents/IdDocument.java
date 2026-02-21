@@ -2,6 +2,10 @@ package app.Lib.Documents;
 
 import app.Lib.DateHelper;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 
 public abstract class IdDocument {
@@ -86,7 +90,25 @@ public abstract class IdDocument {
   }
 
   public boolean save() {
-    // TODO: Implement save to text file or csv file
-    return true;
+    try {
+      File file = new File(getFileName());
+      boolean newFile = file.createNewFile();
+
+      try (BufferedWriter writer =
+               new BufferedWriter(new FileWriter(file, true))) {
+
+        if (newFile) {
+          writer.write(getCsvHeader());
+          writer.newLine();
+        }
+
+        writer.write(toCsvRow());
+        writer.newLine();
+      }
+
+      return true;
+    } catch (IOException e) {
+      return false;
+    }
   }
 }
