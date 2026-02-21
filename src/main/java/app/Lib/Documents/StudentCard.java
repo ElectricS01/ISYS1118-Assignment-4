@@ -20,7 +20,7 @@ public class StudentCard extends IdDocument {
 
   @Override
   protected String getFileName() {
-    return "student_cards.txt";
+    return "student_cards.csv";
   }
 
   @Override

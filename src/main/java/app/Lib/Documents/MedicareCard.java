@@ -22,6 +22,6 @@ public class MedicareCard extends IdDocument {
 
   @Override
   protected String getFileName() {
-    return "medicare_cards.txt";
+    return "medicare_cards.csv";
   }
 }

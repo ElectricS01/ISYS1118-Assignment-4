@@ -29,7 +29,7 @@ public class DriversLicence extends IdDocument {
 
   @Override
   protected String getFileName() {
-    return "drivers_licences.txt";
+    return "drivers_licences.csv";
   }
 
   @Override

@@ -26,7 +26,7 @@ public class Passport extends IdDocument {
 
   @Override
   protected String getFileName() {
-    return "passports.txt";
+    return "passports.csv";
   }
 
   @Override
