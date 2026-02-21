@@ -27,4 +27,9 @@ public class MedicareCard extends IdDocument {
   protected String getFileName() {
     return "medicare_cards.csv";
   }
+
+  @Override
+  protected int getPersonCsvColumnIndex() {
+    return 7;
+  }
 }

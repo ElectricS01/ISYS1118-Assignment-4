@@ -6,7 +6,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
+import java.util.List;
 
 public abstract class IdDocument {
 
@@ -60,6 +63,9 @@ public abstract class IdDocument {
   // Each document type will implement this method to specify its own file name for storage
   protected abstract String getFileName();
 
+  // Returns the column index in people.csv that this document type corresponds to
+  protected abstract int getPersonCsvColumnIndex();
+
   public String getPersonID() {
     return personID;
   }
@@ -100,11 +106,17 @@ public abstract class IdDocument {
         + extraCsvFields();
   }
 
-  // Saves the document to a CSV file. Returns true if successful, false otherwise.
+  // Saves the document to a CSV file and updates people.csv. Returns true if successful, false otherwise.
   public boolean save() {
     try {
       // Gets the file name based on the document type and creates it if it doesn't exist
       File file = new File(getFileName());
+
+      // Updates the corresponding person in people.csv with the document ID. If the person cannot be found or updated, it returns false to indicate failure.
+      if (!updatePeopleCsv()) {
+        return false;
+      }
+
       boolean newFile = file.createNewFile();
 
       try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
@@ -124,5 +136,33 @@ public abstract class IdDocument {
     } catch (IOException e) {
       return false;
     }
+  }
+
+  // Updates the corresponding column in people.csv for this person with the document ID
+  private boolean updatePeopleCsv() throws IOException {
+    Path peoplePath = Path.of("people.csv");
+    if (!Files.exists(peoplePath)) return false;
+
+    List<String> lines = Files.readAllLines(peoplePath);
+
+    boolean personUpdated = false;
+
+    for (int i = 1; i < lines.size(); i++) {
+      String line = lines.get(i);
+      if (line == null || line.trim().isEmpty()) continue;
+
+      String[] cols = line.split(",", -1);
+      if (cols.length < 9) continue;
+
+      if (cols[0].equals(personID)) {
+        cols[getPersonCsvColumnIndex()] = id;
+        lines.set(i, String.join(",", cols));
+        personUpdated = true;
+        break;
+      }
+    }
+
+    Files.write(peoplePath, lines);
+    return personUpdated;
   }
 }

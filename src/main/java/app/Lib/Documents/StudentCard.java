@@ -32,4 +32,9 @@ public class StudentCard extends IdDocument {
   protected String getFileName() {
     return "student_cards.csv";
   }
+
+  @Override
+  protected int getPersonCsvColumnIndex() {
+    return 8;
+  }
 }

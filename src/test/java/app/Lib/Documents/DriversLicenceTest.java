@@ -1,7 +1,7 @@
 package app.Lib.Documents;
 
 import app.TestHelper;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -16,9 +16,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class DriversLicenceTest {
 
-	@BeforeAll
-	static void setup() {
+	@BeforeEach
+	void setup() {
 		TestHelper.deleteCsvFiles();
+		TestHelper.createTestPerson();
 	}
 
 	static Stream<Arguments> validLicenceProvider() {
@@ -89,8 +90,7 @@ public class DriversLicenceTest {
 	}
 
 	@Test
-	void testSave_WritesValidLicense() {
-		TestHelper.deleteCsvFiles();
+	void testSave_ValidLicense_Writes() {
 		Path path = Paths.get("drivers_licences.csv");
 		assertFalse(Files.exists(path));
 
@@ -106,5 +106,15 @@ public class DriversLicenceTest {
 		} catch (Exception e) {
 			fail("Exception thrown while reading drivers_licences.csv: " + e.getMessage());
 		}
+	}
+
+	@Test
+	void testSave_InvalidLicense_DoesNotWrite() {
+		Path path = Paths.get("drivers_licences.csv");
+
+		var licence = new DriversLicence("BAD", "33##abcdEF", "Alice", "01-01-2000", "Australia", "01-01-2020", "01-01-2030", "1", "Car");
+
+		assertFalse(licence.save());
+		assertFalse(Files.exists(path));
 	}
 }

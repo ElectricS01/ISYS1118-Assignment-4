@@ -1,7 +1,7 @@
 package app.Lib.Documents;
 
 import app.TestHelper;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -16,9 +16,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PassportTest {
 
-  @BeforeAll
-  static void setup() {
+  @BeforeEach
+	void setup() {
     TestHelper.deleteCsvFiles();
+		TestHelper.createTestPerson();
   }
 
 	static Stream<Arguments> validPassportProvider() {
@@ -87,8 +88,7 @@ public class PassportTest {
 	}
 
 	@Test
-	void testSave_WritesValidPassword() {
-		TestHelper.deleteCsvFiles();
+	void testSave_ValidPassport_Writes() {
 		Path path = Paths.get("passports.csv");
 		assertFalse(Files.exists(path));
 
@@ -104,5 +104,15 @@ public class PassportTest {
 		} catch (Exception e) {
 			fail("Exception thrown while reading passports.csv: " + e.getMessage());
 		}
+	}
+
+	@Test
+	void testSave_InvalidPassport_DoesNotWrite() {
+		Path path = Paths.get("passports.csv");
+
+		var passport = new Passport("BAD", "33##abcdEF", "Alice", "01-01-2000", "Australia", "01-01-2020", "01-01-2030", "DFAT");
+
+		assertFalse(passport.save());
+		assertFalse(Files.exists(path));
 	}
 }

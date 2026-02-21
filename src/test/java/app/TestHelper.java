@@ -15,4 +15,9 @@ public class TestHelper {
       e.printStackTrace();
     }
   }
+
+  public static void createTestPerson() {
+    Person person = new Person();
+    person.addPerson("22##abcdEF", "First Name", "Last Name", "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
+  }
 }

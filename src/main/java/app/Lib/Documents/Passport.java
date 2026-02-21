@@ -33,6 +33,11 @@ public class Passport extends IdDocument {
   }
 
   @Override
+  protected int getPersonCsvColumnIndex() {
+    return 5;
+  }
+
+  @Override
   protected String extraCsvHeader() {
     return ",authority";
   }

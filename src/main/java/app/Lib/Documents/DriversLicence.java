@@ -36,6 +36,11 @@ public class DriversLicence extends IdDocument {
   }
 
   @Override
+  protected int getPersonCsvColumnIndex() {
+    return 6;
+  }
+
+  @Override
   protected String extraCsvHeader() {
     return ",version,vehicleType";
   }
