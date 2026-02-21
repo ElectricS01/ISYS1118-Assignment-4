@@ -156,8 +156,31 @@ public class Person {
 	}
 
 	public boolean addID(IdDocument idDocument) {
+		if (personID == null) {
+			return false;
+		}
 		if (idDocument.childrenOnly() && !DateHelper.isUnder18(birthDate, LocalDate.now())) {
 			return false;
+		}
+
+		if (!personID.equals(idDocument.getPersonID())) {
+			return false;
+		}
+
+		try {
+			java.util.List<String> lines = Files.readAllLines(Path.of("/people.csv"));
+			boolean personExists = false;
+			for (String line : lines) {
+				String[] splitLine = line.split(",");
+				if (splitLine[0].equals(idDocument.getPersonID())) {
+					personExists = true;
+				}
+			}
+			if (!personExists) {
+				return false;
+			}
+		} catch (IOException e) {
+			System.out.println("An error occurred: " + e);
 		}
 
 		return idDocument.isValid() && idDocument.save();

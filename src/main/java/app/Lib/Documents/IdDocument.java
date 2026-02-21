@@ -56,6 +56,8 @@ public abstract class IdDocument {
 
   protected abstract String getFileName();
 
+  public String getPersonID() { return personId; }
+
   public boolean childrenOnly() {
     return false;
   }
