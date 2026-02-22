@@ -80,7 +80,7 @@ public class DateHelperTest {
 
   @ParameterizedTest(name = "{3}")
   @MethodSource("under18Provider")
-  void testIsOver18(String birthDate, LocalDate today, boolean expected, String label) {
+  void testIsUnder18(String birthDate, LocalDate today, boolean expected, String label) {
     assertEquals(expected, DateHelper.isUnder18(birthDate, today));
   }
 }
